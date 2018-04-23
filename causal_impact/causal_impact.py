@@ -187,10 +187,15 @@ class CausalImpact:
             (self.data.loc[self.data_inter:, self._obs_col()] - post_upper).cumsum(),
             facecolor='gray', interpolate=True, alpha=0.25,
         )
+
         plt.axis([self.data.index[0], self.data.index[-1], None, None])
-        ax3.set_xticklabels(self.data_index)
+        n_tks = 15
+        xtk_sep = len(self.data.index)//(n_tks-1)
+        xtks = self.data.index[::xtk_sep]
+        ax3.set_xticks(xtks)
+        lxtks = self.data_index[::xtk_sep]
+        ax3.set_xticklabels(lxtks, rotation=40, ha='right')
+
         plt.title('Cumulative Impact')
         plt.xlabel('$T$')
         plt.show()
-
-        print('Note: the first {} observations are not shown, due to approximate diffuse initialization'.format(min_t))
